@@ -1,0 +1,9 @@
+import FileSystem
+
+// Headless gate: the shim links, and its one non-blocking answer crosses the
+// boundary as a real Kira String. Prints the chooser this build talks to.
+@Main
+function main() {
+    print(FileSystem.dialogBackend())
+    return
+}
