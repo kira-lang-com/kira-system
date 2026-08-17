@@ -93,6 +93,24 @@ static void kira_system_set_title(IFileDialog* dialog, const char* title) {
     }
 }
 
+/* The window a chooser is modal to: the one this thread is working in, and
+ * failing that whatever this program has in front. NULL only when the program
+ * has no window at all, which is the one case an unowned dialog is right. */
+static HWND kira_system_dialog_owner(void) {
+    HWND owner = GetActiveWindow();
+    if (owner == NULL) {
+        owner = GetForegroundWindow();
+    }
+    if (owner != NULL) {
+        DWORD windowProcess = 0;
+        GetWindowThreadProcessId(owner, &windowProcess);
+        if (windowProcess != GetCurrentProcessId()) {
+            owner = NULL;
+        }
+    }
+    return owner;
+}
+
 /* One run of the common item dialog. `save` picks the save panel over the open
  * panel; `folders` turns the open panel into a folder chooser.
  *
@@ -132,8 +150,14 @@ static const char* kira_system_run_dialog(int save, int folders, const char* tit
         }
 
         /* A cancel is an ordinary answer, and arrives as a failing HRESULT
-         * (ERROR_CANCELLED); the empty result already says it. */
-        if (SUCCEEDED(IFileDialog_Show(dialog, NULL))) {
+         * (ERROR_CANCELLED); the empty result already says it.
+         *
+         * The chooser is shown OVER this program's own window. Shown with no
+         * owner it is modal to nothing: the window it was opened from keeps its
+         * z-order and the chooser can come up behind it, while the thread that
+         * asked for it sits inside Show() and stops pumping — a program that
+         * looks frozen and a dialog nobody can see. */
+        if (SUCCEEDED(IFileDialog_Show(dialog, kira_system_dialog_owner()))) {
             IShellItem* item = NULL;
             if (SUCCEEDED(IFileDialog_GetResult(dialog, &item)) && item != NULL) {
                 kira_system_take_result(item);
