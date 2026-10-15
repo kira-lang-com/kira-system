@@ -5,5 +5,4 @@ import FileSystem
 @Main
 function main() {
     print(FileSystem.dialogBackend())
-    return
 }

@@ -1,9 +1,5 @@
-Package systembackend {
-    let version = "0.1.0"
-    let kira = "0.1.0"
-    let kind = PackageKind.App
-    let defaults = Defaults { executionMode: Backend.Llvm, buildTarget: BuildTarget.Host }
-    let dependencies = [
-        Dependency { name: "FileSystem", path: "../../FileSystem" }
-    ]
+construct systembackend extends Package {
+    let version: String = "0.1.0"
+    let kind: PackageKind = .App
+    let dependencies: [Dependency] = [Dependency { name: "FileSystem", path: "../../FileSystem" }]
 }

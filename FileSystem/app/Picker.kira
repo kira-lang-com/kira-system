@@ -1,3 +1,5 @@
+import Foundation
+
 // The platform's file chooser.
 //
 // An application that draws its own chooser draws one that knows nothing: not
@@ -16,32 +18,27 @@
 
 // Choose one existing directory. `title` labels the dialog and `start` is the
 // directory it opens in; either may be empty for the platform's default.
-@Native
 function pickFolderIn(title: borrow String, start: borrow String) -> String {
     return kira_system_pick_folder(title, start)
 }
 
 // Choose a directory with the platform's own defaults — the shape almost every
 // caller wants: `let folder = FileSystem.pickFolder()`.
-@Native
 function pickFolder() -> String {
     return pickFolderIn("", "")
 }
 
 // Choose one existing file.
-@Native
 function pickFileIn(title: borrow String, start: borrow String) -> String {
     return kira_system_pick_file(title, start)
 }
 
-@Native
 function pickFile() -> String {
     return pickFileIn("", "")
 }
 
 // Name a file that need not exist yet (the save panel). `suggested` is the file
 // name the dialog opens with.
-@Native
 function pickSavePath(title: borrow String, start: borrow String, suggested: borrow String) -> String {
     return kira_system_pick_save_path(title, start, suggested)
 }
@@ -49,7 +46,6 @@ function pickSavePath(title: borrow String, start: borrow String, suggested: bor
 // Which chooser this build talks to: "windows", "macos", "portal" (a Linux
 // desktop helper) or "none". Callers that must not block on a chooser they
 // cannot get can ask first; everything else reads an empty path as a cancel.
-@Native
 function dialogBackend() -> String {
     return kira_system_dialog_backend()
 }
