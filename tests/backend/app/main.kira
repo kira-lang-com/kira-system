@@ -1,0 +1,12 @@
+//! A headless gate for the FileSystem package: the native dialog shim links,
+//! and its one non-blocking answer crosses the boundary as a Kira String.
+//!
+//! It prints the chooser this build talks to, and opens no dialog.
+
+import FileSystem
+
+/// Prints the chooser this build talks to: `windows`, `macos`, `portal` or `none`.
+@Main
+function main() {
+    print(FileSystem.dialogBackend())
+}

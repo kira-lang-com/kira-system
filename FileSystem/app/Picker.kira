@@ -1,0 +1,102 @@
+//! The platform's file chooser: ask the operating system's own dialog for a
+//! file or a folder, and get back a path.
+//!
+//! An application that draws its own chooser draws one that knows nothing of
+//! the user's sidebar, recents, tags, mounted volumes or shortcuts. Every
+//! platform ships the real one, and it is the only one the user has learned.
+//! The surface is therefore small: ask, and receive a path.
+//!
+//! A cancel is an ordinary answer, not a failure. It is the empty string, so
+//! `if folder.count > 0` is the complete handling of one of these calls. A
+//! platform with no chooser at all gives the same answer.
+//!
+//! Every call blocks while the dialog is open. Call it from the thread that owns
+//! the application's windows, which for a Kira UI application is the main
+//! thread where widget actions already run.
+//!
+//! # Examples
+//!
+//! ```kira
+//! let folder = FileSystem.pickFolder()
+//! if folder.count > 0 {
+//!     print("chose \(folder)")
+//! }
+//! ```
+
+import Foundation
+
+/// Asks the user to choose one existing directory.
+///
+/// `title` labels the dialog and `start` is the directory it opens in. Either
+/// may be empty for the platform's default.
+///
+/// Returns the chosen directory's path, or the empty string when the user cancels.
+public function pickFolderIn(title: borrow String, start: borrow String) -> String {
+    return kira_system_pick_folder(title, start)
+}
+
+/// Asks the user to choose one existing directory, with the platform's defaults.
+///
+/// Returns the chosen directory's path, or the empty string when the user cancels.
+///
+/// # Examples
+///
+/// ```kira
+/// let folder = FileSystem.pickFolder()
+/// ```
+public function pickFolder() -> String {
+    return pickFolderIn("", "")
+}
+
+/// Asks the user to choose one existing file.
+///
+/// `title` labels the dialog and `start` is the directory it opens in. Either
+/// may be empty for the platform's default.
+///
+/// Returns the chosen file's path, or the empty string when the user cancels.
+public function pickFileIn(title: borrow String, start: borrow String) -> String {
+    return kira_system_pick_file(title, start)
+}
+
+/// Asks the user to choose one existing file, with the platform's defaults.
+///
+/// Returns the chosen file's path, or the empty string when the user cancels.
+///
+/// # Examples
+///
+/// ```kira
+/// let file = FileSystem.pickFile()
+/// ```
+public function pickFile() -> String {
+    return pickFileIn("", "")
+}
+
+/// Asks the user where to save a file, which need not exist yet.
+///
+/// `title` labels the dialog, `start` is the directory it opens in, and
+/// `suggested` is the file name it opens with. Each may be empty.
+///
+/// Returns the chosen path, or the empty string when the user cancels.
+public function pickSavePath(
+    title: borrow String,
+    start: borrow String,
+    suggested: borrow String
+) -> String {
+    return kira_system_pick_save_path(title, start, suggested)
+}
+
+/// Returns which chooser this build talks to.
+///
+/// The result is `"windows"`, `"macos"`, `"portal"` (a Linux desktop helper) or
+/// `"none"`. A caller that must not block on a chooser it cannot get can ask
+/// first. Every other caller can read an empty path as a cancel.
+public function dialogBackend() -> String {
+    return kira_system_dialog_backend()
+}
+
+/// Returns whether this platform can show a chooser at all.
+///
+/// Equivalent to `dialogBackend() != "none"`.
+public function canPick() -> Bool {
+    return dialogBackend() != "none"
+}

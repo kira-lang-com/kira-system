@@ -1,0 +1,17 @@
+import Foundation
+
+// The chooser this build talks to. A dialog is modal and needs a person, so the
+// tests check the answers that do not open one. The pickers themselves are
+// exercised by running the application on a desktop.
+
+@Test
+function backendIsOneOfTheKnownChoosers() {
+    let backend = dialogBackend()
+    let known = backend == "windows" || backend == "macos" || backend == "portal" || backend == "none"
+    expect!(known)
+}
+
+@Test
+function canPickAgreesWithTheBackend() {
+    expect!(canPick() == (dialogBackend() != "none"))
+}

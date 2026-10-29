@@ -1,0 +1,17 @@
+import Foundation
+import FileSystem
+
+// The FileSystem package seen from another package: the shim links, and its
+// answers reach this package as Kira values.
+
+@Test
+function linkedBackendNamesAKnownChooser() {
+    let backend = FileSystem.dialogBackend()
+    let known = backend == "windows" || backend == "macos" || backend == "portal" || backend == "none"
+    expect!(known)
+}
+
+@Test
+function linkedCanPickMatchesTheBackend() {
+    expect!(FileSystem.canPick() == (FileSystem.dialogBackend() != "none"))
+}
