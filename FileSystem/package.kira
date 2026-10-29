@@ -1,5 +1,5 @@
 construct FileSystem extends Package {
-    let version: String = "0.1.0"
+    let version: String = "26.10.4"
     let kind: PackageKind = .Library
     // The platform's own file chooser. Every operating system has one and none
     // of them expose it through the C standard library, so the three answers
