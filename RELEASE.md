@@ -1,3 +1,3 @@
 # 26.10.4
 
-Initial source release: Kira packages for operating-system surfaces, including the native file and folder chooser.
+The first source release of Kira System includes the `FileSystem` package for the platform's native file and folder chooser. Applications can depend on the namespace separately and call `FileSystem.pickFolder()`.
