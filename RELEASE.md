@@ -5,4 +5,4 @@
 
 ## Highlights
 
-No changes to this package's source files have landed since the `26.10.4` release baseline. This weekly source release updates version metadata only where the package declares a version; it does not claim new functionality or fresh build validation.
+File chooser operations now explicitly cross `unsafe` boundaries when calling their native platform implementations. The public chooser functions and their cancel-as-empty-string behavior are unchanged.

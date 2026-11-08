@@ -32,7 +32,9 @@ import Foundation
 ///
 /// Returns the chosen directory's path, or the empty string when the user cancels.
 public function pickFolderIn(title: borrow String, start: borrow String) -> String {
-    return kira_system_pick_folder(title, start)
+    unsafe {
+        return kira_system_pick_folder(title, start)
+    }
 }
 
 /// Asks the user to choose one existing directory, with the platform's defaults.
@@ -55,7 +57,9 @@ public function pickFolder() -> String {
 ///
 /// Returns the chosen file's path, or the empty string when the user cancels.
 public function pickFileIn(title: borrow String, start: borrow String) -> String {
-    return kira_system_pick_file(title, start)
+    unsafe {
+        return kira_system_pick_file(title, start)
+    }
 }
 
 /// Asks the user to choose one existing file, with the platform's defaults.
@@ -82,7 +86,9 @@ public function pickSavePath(
     start: borrow String,
     suggested: borrow String
 ) -> String {
-    return kira_system_pick_save_path(title, start, suggested)
+    unsafe {
+        return kira_system_pick_save_path(title, start, suggested)
+    }
 }
 
 /// Returns which chooser this build talks to.
@@ -91,7 +97,9 @@ public function pickSavePath(
 /// `"none"`. A caller that must not block on a chooser it cannot get can ask
 /// first. Every other caller can read an empty path as a cancel.
 public function dialogBackend() -> String {
-    return kira_system_dialog_backend()
+    unsafe {
+        return kira_system_dialog_backend()
+    }
 }
 
 /// Returns whether this platform can show a chooser at all.
